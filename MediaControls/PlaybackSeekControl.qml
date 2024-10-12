@@ -15,13 +15,6 @@ Item {
     required property MediaPlayer mediaPlayer
     property alias isMediaSliderPressed: mediaSlider.pressed
 
-    function getTime(time : int) {
-        const h = Math.floor(time / 3600000).toString()
-        const m = Math.floor(time / 60000).toString()
-        const s = Math.floor(time / 1000 - m * 60).toString()
-        return `${h.padStart(2,'0')}:${m.padStart(2,'0')}:${s.padStart(2, '0')}`
-    }
-
     RowLayout {
         anchors.fill: root
         anchors.leftMargin: 200
@@ -31,7 +24,14 @@ Item {
             id: mediaTime
             color: Config.secondaryColor
             font.bold: true
-            text: root.getTime(root.mediaPlayer.position)
+            property int mediaTimePosition
+            mediaTimePosition: root.mediaPlayer.position
+            onMediaTimePositionChanged : {
+                const h = Math.floor(mediaTimePosition / 3600000).toString()
+                const m = Math.floor(mediaTimePosition / 60000).toString()
+                const s = Math.floor(mediaTimePosition / 1000 - m * 60).toString()
+                text = `${h.padStart(2,'0')}:${m.padStart(2,'0')}:${s.padStart(2, '0')}`
+            }
         }
 
         CustomSlider {
@@ -51,7 +51,15 @@ Item {
             id: durationTime
             color: Config.secondaryColor
             font.bold: true
-            text: root.getTime(root.mediaPlayer.duration)
+            property int durationTimePosition
+            durationTimePosition: root.mediaPlayer.duration
+            onDurationTimePositionChanged : {
+                const h = Math.floor(durationTimePosition / 3600000).toString()
+                const m = Math.floor(durationTimePosition / 60000).toString()
+                const s = Math.floor(durationTimePosition / 1000 - m * 60).toString()
+                text = `${h.padStart(2,'0')}:${m.padStart(2,'0')}:${s.padStart(2, '0')}`
+            }
+
         }
 
     }
